@@ -23,6 +23,16 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author findById(Long id) {
-        return authorRepository.findById(id);
+        return authorRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Author findAuthorById(Long authorId) {
+        return authorRepository.findById(authorId).orElse(null);
+    }
+
+    @Override
+    public void save(Author author) {
+        authorRepository.save(author);
     }
 }

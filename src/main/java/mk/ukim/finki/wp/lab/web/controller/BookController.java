@@ -61,7 +61,7 @@ public class BookController {
             return "redirect:/books?error=AuthorNotFound";
         }
 
-        bookService.saveBook(title, genre, averageRating, author.getId());
+        bookService.saveBook(new Book(title, genre, averageRating, authorService.findById(authorId)));
         return "redirect:/books";
     }
 
@@ -78,7 +78,7 @@ public class BookController {
             return "redirect:/books?error=AuthorNotFound";
         }
 
-        bookService.editBook(bookId, title, genre, averageRating, author.getId());
+        bookService.editBook(bookId, new Book(title, genre, averageRating, authorService.findAuthorById(authorId)));
         return "redirect:/books";
     }
 

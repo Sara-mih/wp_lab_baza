@@ -1,21 +1,37 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
 //@AllArgsConstructor
 @Data
+@Entity
+@Table(name="knigi")
+public class Book  {
 
-public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    private Long id;
     private String title;
     private String genre;
     private double averageRating;
-    private Long id;
+
+
+    @ManyToOne
+
+//  @JoinColumn(name = "author_id") // името на колоната во базата
     private Author author;
     public Book() {
     }
 
     public Book(String title, String genre, double averageRating,Author author) {
-        this.id=(long)(Math.random()*1000);
+//        this.id=(long)(Math.random()*1000);
         this.title = title;
         this.genre = genre;
         this.averageRating = averageRating;

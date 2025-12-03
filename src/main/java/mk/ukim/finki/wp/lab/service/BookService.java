@@ -8,9 +8,10 @@ public interface BookService {
     List<Book> listAll();
     List<Book> searchBooks(String text, Double rating);
 
-    Book saveBook(String title, String genre, Double averageRating, Long authorId);
+//    Book saveBook(String title, String genre, Double averageRating, Long authorId);
 
-    Book editBook(Long bookId, String title, String genre, Double averageRating, Long authorId);
+    void saveBook(Book book);
+    void editBook(Long Id, Book book);
 
     void deleteBook(Long bookId);
 

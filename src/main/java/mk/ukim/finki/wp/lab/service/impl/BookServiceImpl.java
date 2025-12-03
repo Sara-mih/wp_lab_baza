@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Book;
+import mk.ukim.finki.wp.lab.repository.AuthorRepository;
 import mk.ukim.finki.wp.lab.repository.BookRepository;
 import mk.ukim.finki.wp.lab.service.BookService;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,11 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -26,17 +29,25 @@ public class BookServiceImpl implements BookService {
         if ((text == null || text.isEmpty()) && rating == null) {
             return listAll();
         }
-        return this.bookRepository.searchBooks(text, rating);
+        return this.bookRepository.findAllByTitleAndAverageRating(text, rating);
     }
 
-    @Override
-    public Book saveBook(String title, String genre, Double averageRating, Long authorId) {
-        return this.bookRepository.addBook(title, genre, averageRating, authorId);
-    }
+//    @Override
+//    public Book saveBook(String title, String genre, Double averageRating, Long authorId) {
+//        return this.bookRepository.save(new Book(title, genre, averageRating, authorRepository.findById(authorId).orElse(null)));
+//    }
 
     @Override
-    public Book editBook(Long bookId, String title, String genre, Double averageRating, Long authorId) {
-        return this.bookRepository.editBook(bookId, title, genre, averageRating, authorId);
+    public void editBook(Long id, Book updatedBook) {
+        Book book = bookRepository.findById(id)
+                .orElse(null);
+        assert book != null;
+        book.setTitle(updatedBook.getTitle());
+        book.setGenre(updatedBook.getGenre());
+        book.setAverageRating(updatedBook.getAverageRating());
+        book.setAuthor(updatedBook.getAuthor());
+
+        bookRepository.save(book);
     }
 
     @Override
@@ -46,6 +57,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book findById(Long bookId) {
-        return this.bookRepository.findById(bookId);
+        return this.bookRepository.findById(bookId).orElse(null);
     }
+
+    @Override
+    public void  saveBook(Book book) {
+        this.bookRepository.save(book);
+    }
+
 }

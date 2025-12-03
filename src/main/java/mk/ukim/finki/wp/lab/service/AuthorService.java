@@ -7,4 +7,8 @@ public interface AuthorService {
     List<Author> findAll();
 
     Author findById(Long id);
+
+    Author findAuthorById(Long authorId);
+
+    void save(Author author);
 }
